@@ -178,13 +178,12 @@ if __name__ == '__main__':
     os.system('cls')
     print(colored(text=f'1. Welcome to the subnetting calculator.', color='red', attrs=['reverse', 'blink']))
     input()
-    os.system('cls')
-    ip_address   = "10.10.0.0" # input(f'Enter an ipv4 address: ')
-    subnet_mask  = "255.255.0.0" # input(f'Enter a subnet mask: ')
-    subnet_count = int("10") # input(f'Required number of subnets: ')
-    host_count   = int("10") # input(f'Required number of hosts: ')
+    ip_address   = input(f'Enter an ipv4 address: ')
+    subnet_mask  = input(f'Enter a subnet mask: ')
+    subnet_count = int(input(f'Required number of subnets: '))
+    host_count   = int(input(f'Required number of hosts: '))
     s = subnetting_ipv4(ip_address=ip_address, subnet_mask=subnet_mask, subnet_count=subnet_count, hosts_count=host_count)
-    # os.system('cls')
+    os.system('cls')
     # explaining the portions of the ip
     print(colored(text=f'2. Turning IP to binary', color='yellow', attrs=['reverse', 'blink']))
     # convert to binary:
@@ -279,6 +278,7 @@ if __name__ == '__main__':
     input()
     os.system('cls')
 
+    index = 0
     while True:
         choice = input()
         if (choice == 'q') or (index >= len(s.bn_addresses_bin)):
@@ -296,6 +296,55 @@ if __name__ == '__main__':
             colored(text=f'{ip_address_b}', color='blue', attrs=['reverse', 'blink'])
         )
         index += 1
+    
+    os.system('cls')
+    print(colored(text=f'7. Similarly we can get iterate in the available number of hosts.', color='red', attrs=['reverse', 'blink']))
+    print(f'We can get anything from host number 1 all the way to the maximum - 1.\n')
+    print(f'This because the first address (all 0s) we use for the network address of the subnet.\nAll 1s is for broadcast.\n')
+    print(f'Let\'s see the animation again but the addresses in binary form.\n')
+
+    input()
+    os.system('cls')
+
+    index = 0
+    ip_addr_prefix = s.ip_binary_string[0:s.subnet_mask]
+    choice = None
+    for subnet in range(s.subnet_count):
+        if choice and choice == 'q': break
+        for host in range(s.hosts_count):
+            print('Press q to quit.\n\n')
+            print(colored(text=f'Network Address (blue)', color='blue') + ' ' + colored(text='Subnet Portion (red)', color='red') + ' ' + colored(text='Host portion (green)', color='green'))
+            print(colored(text=f'{ip_addr_prefix}', color='blue', attrs=['reverse', 'blink'])+colored(text=f'{bin(subnet).replace("0b","").zfill(s.bits_for_subnet)}', color='red', attrs=['reverse', 'blink'])+colored(text=f'{bin(host).replace("0b","").zfill(s.bits_for_hosts)}', color='green', attrs=['reverse', 'blink']))
+            choice = input()
+            os.system('cls')
+            if (choice == 'q'): 
+                print("exit")
+                break
+    
+    os.system('cls')
+    print(colored(text=f'8. Lets iterate the same but with decimal form.', color='green', attrs=['reverse', 'blink']))
+    print(f'We can get anything from host number 1 all the way to the maximum - 1.\n')
+    print(f'This because the first address (all 0s) we use for the network address of the subnet.\nAll 1s is for broadcast.\n')
+    print(f'Let\'s see the animation again but the addresses in decimal form.\n')
+
+    input()
+    os.system('cls')
+
+    choice = None
+    for subnet in range(s.subnet_count):
+        if choice and choice == 'q': break
+        for host in range(s.hosts_count):
+            print('Press q to quit.\n\n')
+            print(colored(text=f'Network Address (blue)', color='blue') + ' ' + colored(text='Subnet Portion (red)', color='red') + ' ' + colored(text='Host portion (green)', color='green'))
+            print(colored(text=f'{ip_addr_prefix}', color='blue', attrs=['reverse', 'blink'])+colored(text=f'{bin(subnet).replace("0b","").zfill(s.bits_for_subnet)}', color='red', attrs=['reverse', 'blink'])+colored(text=f'{bin(host).replace("0b","").zfill(s.bits_for_hosts)}', color='green', attrs=['reverse', 'blink']))
+            ip_addr = ip_addr_prefix + bin(subnet).replace("0b","").zfill(s.bits_for_subnet) + bin(host).replace("0b","").zfill(s.bits_for_hosts)
+            ip_addr = '.'.join([str(int(n,2)).zfill(3) for n in re.findall('........', ip_addr)])
+            print(ip_addr)
+            choice = input()
+            os.system('cls')
+            if (choice == 'q'): 
+                print("exit")
+                break
     
     os.system('cls')
     print(colored(text=f'7. Finished.', color='red', attrs=['reverse', 'blink']))
